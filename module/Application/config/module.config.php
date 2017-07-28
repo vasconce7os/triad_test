@@ -36,7 +36,6 @@ return [
             ],
 
 
-
             'custos' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -52,7 +51,6 @@ return [
                 ],
             ],
 
-
             'products' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -67,8 +65,6 @@ return [
                     ],
                 ],
             ],
-
-
             
 
             'transportadoras' => [
@@ -86,10 +82,7 @@ return [
                 ],
             ],
 
-
-
         ],
-
 
     ],
 
@@ -114,21 +107,18 @@ return [
                 //         'label'  => 'Add',
                 //         'route'  => 'album',
                 //         'action' => 'add',
-                //     ],
-                //     [
-                //         'label'  => 'Edit',
-                //         'route'  => 'album',
-                //         'action' => 'edit',
-                //     ],
-                //     [
-                //         'label'  => 'Delete',
-                //         'route'  => 'album',
-                //         'action' => 'delete',
-                //     ],
+                //     ]
                 // ],
             ],
+            [
+                'label' => 'Custos',
+                'route' => 'custos',
+            ],
+            [
+                'label' => 'Produtos',
+                'route' => 'products',
+            ],
 
-            
 
         ],
     ],

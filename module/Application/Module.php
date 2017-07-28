@@ -42,21 +42,6 @@ class Module
                     return new TableGateway('products', $dbAdapter, null, $resultSetPrototype);
                 },
 
-
-                Model\AlbumTable::class        => function ($container) {
-                    $tableGateway = $container->get('Model\AlbumTableGateway');
-
-                    return new Model\AlbumTable($tableGateway);
-                },
-                'Model\AlbumTableGateway' => function ($container) {
-                    $dbAdapter          = $container->get(AdapterInterface::class);
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Model\Album());
-
-                    return new TableGateway('album', $dbAdapter, null, $resultSetPrototype);
-                },
-
-
                 Model\TransportadoraTable::class        => function ($container) {
                     $tableGateway = $container->get('Model\TransportadoraTableGateway');
 
@@ -84,12 +69,6 @@ class Module
                 Controller\ProductsController::class => function ($container) {
                     return new Controller\ProductsController(
                         $container->get(Model\ProductsTable::class)
-                    );
-                },
-
-                Controller\AlbumController::class => function ($container) {
-                    return new Controller\AlbumController(
-                        $container->get(Model\AlbumTable::class)
                     );
                 },
 

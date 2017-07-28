@@ -11,25 +11,33 @@ class Products
 {
     public  $id;
 
-    public  $artist;
+    public  $model;
 
-    public  $title;
+    public  $price;
+
+    public  $color;
+
+    public  $description;
 
     private $inputFilter;
 
     public function exchangeArray(array $data)
     {
         $this->id     = (!empty($data['id'])) ? $data['id'] : null;
-        $this->artist = (!empty($data['artist'])) ? $data['artist'] : null;
-        $this->title  = (!empty($data['title'])) ? $data['title'] : null;
+        $this->model = (!empty($data['model'])) ? $data['model'] : null;
+        $this->price  = (!empty($data['price'])) ? $data['price'] : null;
+        $this->color  = (!empty($data['color'])) ? $data['color'] : null;
+        $this->description  = (!empty($data['description'])) ? $data['description'] : null;
     }
 
     public function getArrayCopy()
     {
         return [
             'id'     => $this->id,
-            'artist' => $this->artist,
-            'title'  => $this->title,
+            'model' => $this->model,
+            'price'  => $this->price,
+            'color'  => $this->color,
+            'description'  => $this->description,
         ];
     }
 
@@ -58,7 +66,7 @@ class Products
         ]);
 
         $inputFilter->add([
-            'name'       => 'artist',
+            'name'       => 'model',
             'required'   => true,
             'filters'    => [
                 ['name' => 'StripTags'],
@@ -77,7 +85,47 @@ class Products
         ]);
 
         $inputFilter->add([
-            'name'       => 'title',
+            'name'       => 'price',
+            'required'   => true,
+            'filters'    => [
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'StringLength',
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min'      => 1,
+                        'max'      => 100,
+                    ],
+                ],
+            ],
+        ]);
+
+
+        $inputFilter->add([
+            'name'       => 'color',
+            'required'   => true,
+            'filters'    => [
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'StringLength',
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min'      => 1,
+                        'max'      => 100,
+                    ],
+                ],
+            ],
+        ]);
+
+
+        $inputFilter->add([
+            'name'       => 'description',
             'required'   => true,
             'filters'    => [
                 ['name' => 'StripTags'],

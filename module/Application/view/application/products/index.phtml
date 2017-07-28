@@ -1,25 +1,27 @@
 <?php
-$title = 'My albums';
+$title = 'Produtos';
 $this->headTitle($title);
 ?>
 <h1><?= $this->escapeHtml($title); ?></h1>
-<p>
-    <a href="<?= $this->url('products', ['action' => 'add']) ?>">Add new album</a>
-</p>
 
 <table class="table">
     <tr>
-        <th>Title</th>
-        <th>Artist</th>
+        <th>modelo</th>
+        <th>preço</th>
+        <th>cor</th>
+        <th>descrição</th>
+        <th>custo de transporte
+        </th>
         <th>&nbsp;</th>
     </tr>
-    <?php foreach ($this->paginator as $album) : // <-- change here! ?>
+    <?php foreach ($this->paginator as $products) : // <-- change here! ?>
         <tr>
-            <td><?= $this->escapeHtml($album->title) ?></td>
-            <td><?= $this->escapeHtml($album->artist) ?></td>
+            <td><?= $this->escapeHtml($products->model) ?></td>
+            <td><?= $this->escapeHtml($products->price) ?></td>
+            <td><?= $this->escapeHtml($products->color) ?></td>
+            <td><?= $this->escapeHtml($products->description) ?></td>
             <td>
-                <a href="<?= $this->url('album', ['action' => 'edit', 'id' => $album->id]) ?>">Edit</a>
-                <a href="<?= $this->url('album', ['action' => 'delete', 'id' => $album->id]) ?>">Delete</a>
+                <a href="<?= $this->url('products', ['action' => 'calcular_frete', 'id' => $products->id]) ?>">Calcular frete</a>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -33,5 +35,5 @@ $this->headTitle($title);
     // The partial to use to render the control:
     'partial/paginator',
     // The route to link to when a user clicks a control link:
-    ['route' => 'album']
+    ['route' => 'products']
 ); ?>

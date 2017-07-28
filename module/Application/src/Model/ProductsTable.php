@@ -24,7 +24,6 @@ class ProductsTable
         if ($paginated) {
             return $this->fetchPaginatedResults();
         }
-
         return $this->tableGateway->select();
     }
 
