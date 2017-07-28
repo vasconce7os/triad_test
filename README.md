@@ -34,6 +34,11 @@ Put your database credentials
 ```bash
 $ path/to/project/config/autoload/global.php
 ```
+Put in your server the script sql (MySQL)
+
+```bash
+$ path/to/project/data/schema.sql
+```
 
 ## Development mode
 
