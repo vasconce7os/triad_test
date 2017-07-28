@@ -21,6 +21,20 @@ then please install as per the [documentation](https://getcomposer.org/doc/00-in
 $ composer update
 ```
 
+## Permission 
+Give recursive permission for directory 
+
+```bash
+$ path/to/project/data/
+```
+
+## Database config 
+Put your database credentials
+
+```bash
+$ path/to/project/config/autoload/global.php
+```
+
 ## Development mode
 
 The project ships with [zf-development-mode](https://github.com/zfcampus/zf-development-mode)
