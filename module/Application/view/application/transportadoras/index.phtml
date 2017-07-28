@@ -1,0 +1,37 @@
+<?php
+$title = 'Transportadoras';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?= $this->url('transportadoras', ['action' => 'inserir']) ?>">Adicionar nova Transportadora</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Nome</th>
+        <th>Cidade</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($this->paginator as $transportadora) : // <-- change here! ?>
+        <tr>
+            <td><?= $this->escapeHtml($transportadora->name) ?></td>
+            <td><?= $this->escapeHtml($transportadora->city) ?></td>
+            <td>
+                <a href="<?= $this->url('transportadoras', ['action' => 'editar', 'id' => $transportadora->id]) ?>">Editar</a>
+                <a href="<?= $this->url('transportadoras', ['action' => 'apagar', 'id' => $transportadora->id]) ?>">Apagar</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<?= $this->paginationControl(
+// The paginator object:
+    $this->paginator,
+    // The scrolling style:
+    'sliding',
+    // The partial to use to render the control:
+    'partial/paginator',
+    // The route to link to when a user clicks a control link:
+    ['route' => 'album']
+); ?>
