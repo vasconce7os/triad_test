@@ -4,7 +4,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-
+use Zend\View\Model\JsonModel;
 use Application\Form\TransportadoraForm;
 use Application\Model\Transportadora;
 use Application\Model\TransportadoraTable;
@@ -93,4 +93,35 @@ class TransportadorasController extends AbstractActionController
         return $this->redirect()->toRoute('transportadoras', ['action' => 'index']);
     }
 
+
+    public function searchAction()
+    {
+        
+
+        $tag = $this->params()->fromQuery('v', null);
+        $result = $this->table->searchByName($tag);
+
+
+        return new JsonModel($result);
+    }
+
+
+    public function detalheAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if (0 === $id) {
+            return $this->redirect()->toRoute('transportadora', ['action' => 'add']);
+        }
+
+        // Retrieve the transportadora with the specified id. Doing so raises
+        // an exception if the transportadora is not found, which should result
+        // in redirecting to the landing page.
+        try {
+            $transportadora = $this->table->getTransportadora($id);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('transportadora', ['action' => 'index']);
+        }
+        return $transportadora;
+    }
 }

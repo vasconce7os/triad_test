@@ -1,0 +1,110 @@
+<?php
+$title = 'Calcular custo de transporte';
+$this->headTitle($title);
+?>
+
+
+
+
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  .ui-autocomplete-loading {
+    background: white url("<?php echo($this-> basePath()); ?>/img/loader.gif") right center no-repeat;
+  }
+  </style>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+ 
+    $( "#transportadora" ).autocomplete({
+      source: "<?php echo($this-> basePath()); ?>/transportadoras/search",
+      minLength: 2,
+      select: function( event, ui ) {
+        // log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+        $("#transport_id").val(ui.item.id)
+      }
+    });
+  } );
+  </script>
+
+
+
+
+
+
+
+
+
+
+<?php
+if(!isset($calculoFrete))
+{
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+
+<?php
+} else
+{
+?>
+
+
+<h1><?= "Preco total ". $calculoFrete['total'] ?></h1>
+
+<?php
+}
+?>
+
+<h2>Produto: <?= $this->escapeHtml($product-> model) ?></h2>
+<h3><?= $this->escapeHtml($product-> description) ?></h3>
+
+<div class="form-group">
+        <label for="transportadora">
+        Transportadora
+        </label>
+        <input id="transportadora" name="transportadora" class="form-control" placeholder="Nome da transportadora" value="" type="text">            
+</div>
+
+<?php
+$products_qde = $form->get('products_qde');
+$products_qde->setAttribute('class', 'form-control');
+$products_qde->setAttribute('placeholder', 'Nome');
+
+$transport_type = $form->get('transport_type');
+$transport_type->setAttribute('class', 'form-control');
+$transport_type->setAttribute('placeholder', 'Cidade');
+
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-primary');
+
+$form->setAttribute('action', $this->url(null, [
+    'action' => 'calcular_frete',
+    'id'     => $product-> id
+]));
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formHidden($form->get('id'));
+?>
+
+    <input type="hidden" name="transport_id" id="transport_id">
+    <input type="hidden" name="products_id" value="<?php echo($product-> id) ?>">
+    <div class="form-group">
+        <?= $this->formLabel($products_qde) ?>
+        <?= $this->formElement($products_qde) ?>
+        <?= $this->formElementErrors()->render($products_qde, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= $this->formLabel($transport_type) ?>
+        <?= $this->formElement($transport_type) ?>
+        <?= $this->formElementErrors()->render($transport_type, ['class' => 'help-block']) ?>
+    </div>
+
+<?php
+
+echo $this->formSubmit($submit);
+echo $this->form()->closeTag();

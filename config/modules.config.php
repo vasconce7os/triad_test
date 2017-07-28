@@ -11,7 +11,7 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
-    'ZendDeveloperTools',
+    // 'ZendDeveloperTools',
     'Zend\Paginator',
     'Zend\Navigation',
     'Zend\Form',

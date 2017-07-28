@@ -9,6 +9,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
+use Application\Model\CalculoFrete;
 
 class ProductsTable
 {
@@ -29,25 +30,15 @@ class ProductsTable
 
     private function fetchPaginatedResults()
     {
-        // Create a new Select object for the table:
         $select = new Select($this->tableGateway->getTable());
-
-        // Create a new result set based on the Album entity:
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Products());
-
-        // Create a new pagination adapter object:
         $paginatorAdapter = new DbSelect(
-        // our configured select object:
             $select,
-            // the adapter to run it against:
             $this->tableGateway->getAdapter(),
-            // the result set to hydrate:
             $resultSetPrototype
         );
-
         $paginator = new Paginator($paginatorAdapter);
-
         return $paginator;
     }
 
@@ -66,33 +57,38 @@ class ProductsTable
         return $row;
     }
 
-    public function saveProducts(Products $album)
+    public function calculaFrete(CalculoFrete $calculoFrete)
     {
         $data = [
-            'artist' => $album->artist,
-            'title'  => $album->title,
+            'products_qde' => $calculoFrete->products_qde,
+            'transport_type'  => $calculoFrete->transport_type,
+            'transport_id'  => $calculoFrete->transport_id,
+            'products_id'  => $calculoFrete->products_id,
         ];
 
-        $id = (int) $album->id;
+        $product = $this-> getProducts($data['products_id']);
 
-        if ($id === 0) {
-            $this->tableGateway->insert($data);
-
-            return;
+        $sql = "SELECT * FROM carriers where carriers.id = '". $data['transport_id'] . "'";
+        $stmt = $this->tableGateway->adapter->query($sql);
+        $result = $stmt->execute();
+        if($result->count() > 0)
+        {
+            $transport = $result->current();
         }
-
-        if (!$this->getProducts($id)) {
-            throw new RuntimeException(sprintf(
-                'Cannot update album with identifier %d; does not exist',
-                $id
-            ));
+        if($data ['transport_type'] == 'freight_air')
+        {
+            $vF = $transport['freight_air'];
+        } else if($data ['transport_type'] == 'freight_water')
+        {
+            $vF = $transport['freight_water'];
+        } else if($data ['transport_type'] == 'freight_earthly')
+        {
+            $vF = $transport['freight_earthly'];
         }
-
-        $this->tableGateway->update($data, ['id' => $id]);
-    }
-
-    public function deleteProducts($id)
-    {
-        $this->tableGateway->delete(['id' => (int) $id]);
+        return array ('total'=> (($data['products_qde'] * $product-> price )) + ($data['products_qde'] * $vF)
+            , 'transport'=> $transport
+            , 'product'=> $product
+            );
+        
     }
 }

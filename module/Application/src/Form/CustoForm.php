@@ -43,6 +43,11 @@ class CustoForm extends Form
             'options' => [
                 'label' => 'Frete aereo',
             ],
+            'attributes'=> [
+                'min'  => 0,
+                'max'  => 88888,
+                'step' => 0.1,
+            ]
         ]);
         $this->add([
             'name'    => 'freight_water',
@@ -50,12 +55,22 @@ class CustoForm extends Form
             'options' => [
                 'label' => 'Frete aquatio',
             ],
+            'attributes'=> [
+                'min'  => 0,
+                'max'  => 88888,
+                'step' => 0.1,
+            ],
         ]);
         $this->add([
             'name'    => 'freight_earthly',
             'type'    => 'Number',
             'options' => [
                 'label' => 'Frete terrestre',
+            ],
+            'attributes'=> [
+                'min'  => 0,
+                'max'  => 88888,
+                'step' => 0.1,
             ],
         ]);
 

@@ -4,10 +4,14 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-
 use Application\Form\ProductsForm;
+use Application\Form\CalculoFreteForm;
 use Application\Model\Products;
+use Application\Model\CalculoFrete;
 use Application\Model\ProductsTable;
+use Application\Model\TransportadoraTable;
+use Zend\Db\TableGateway\TableGatewayInterface;
+use Application\Controller\TransportadorasController as TansportCtrl;
 
 class ProductsController extends AbstractActionController
 {
@@ -20,42 +24,44 @@ class ProductsController extends AbstractActionController
 
     public function indexAction()
     {
-        
         $paginator = $this->table->fetchAll(true);
-
         $page = (int) $this->params()->fromQuery('page', 1);
         $page = ($page < 1) ? 1 : $page;
         $paginator->setCurrentPageNumber($page);
-
         $paginator->setItemCountPerPage(10);
-
         return new ViewModel(['paginator' => $paginator]);
     }
 
-
-    public function addAction()
+    public function calcularFreteAction()
     {
-        $form = new ProductsForm();
-        $form->get('submit')->setValue('Add');
-
-        $request = $this->getRequest();
-
-        if (!$request->isPost()) {
-            return ['form' => $form];
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (0 === $id) {
+            return $this->redirect()->toRoute('products', ['action' => 'addss']);
         }
-
-        $album = new Album();
-        $form->setInputFilter($album->getInputFilter());
-        $form->setData($request->getPost());
-
-        if (!$form->isValid()) {
-            return ['form' => $form];
+        $view = new ViewModel();
+        try
+        {
+            $product = $this->table->getProducts($id);
+            $view-> setVariable('product', $product);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('products', ['action' => 'index']);
         }
+        $form = new CalculoFreteForm();
+        $calculoFrete = new CalculoFrete();
+        if ($this-> getRequest()->isPost())
+        {
+            $form->setInputFilter($calculoFrete->getInputFilter());
+            $form->setData($this-> getRequest()->getPost());
+            if ($form->isValid()) {
+                $calculoFrete->exchangeArray($form->getData());
+                $calculoFrete = $this->table->calculaFrete($calculoFrete);
+                $view-> setVariable('calculoFrete', $calculoFrete);
+            }
+            $view-> setVariable('form', $form);
+        }
+        $view-> setVariable('form', $form);
 
-        $album->exchangeArray($form->getData());
-        $this->table->saveAlbum($album);
-
-        return $this->redirect()->toRoute('album');
+        return $view;
     }
 
 }

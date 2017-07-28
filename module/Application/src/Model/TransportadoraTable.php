@@ -97,4 +97,21 @@ class TransportadoraTable
     {
         $this->tableGateway->delete(['id' => (int) $id]);
     }
+
+    public function searchByName($tag)
+    {
+        $sql = "SELECT id, name as label, name as value FROM carriers where carriers.name like '%$tag%'";
+        $stmt = $this->tableGateway->adapter->query($sql);
+        $result = $stmt->execute();
+        if($result->count() > 0) {
+            $returnArr = array();
+            while ($result->valid()) {
+                $returnArr[] = $result->current();
+                $result->next();
+            }
+            if(count($returnArr) > 0) {
+                return $returnArr;
+            }
+        }
+    }
 }
