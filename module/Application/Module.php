@@ -99,6 +99,12 @@ class Module
                     );
                 },
 
+                Controller\CustosController::class => function ($container) {
+                    return new Controller\CustosController(
+                        $container->get(Model\TransportadoraTable::class)
+                    );
+                },
+
             ],
         ];
     }

@@ -15,6 +15,10 @@ class Transportadora
 
     public  $name;
 
+    public  $freight_air;
+    public  $freight_earthly;
+    public  $freight_water;
+
     private $inputFilter;
 
     public function exchangeArray(array $data)
@@ -22,6 +26,9 @@ class Transportadora
         $this->id     = (!empty($data['id'])) ? $data['id'] : null;
         $this->city = (!empty($data['city'])) ? $data['city'] : null;
         $this->name  = (!empty($data['name'])) ? $data['name'] : null;
+        $this->freight_air  = (!empty($data['freight_air'])) ? $data['freight_air'] : null;
+        $this->freight_earthly  = (!empty($data['freight_earthly'])) ? $data['freight_earthly'] : null;
+        $this->freight_water  = (!empty($data['freight_water'])) ? $data['freight_water'] : null;
     }
 
     public function getArrayCopy()
@@ -30,6 +37,9 @@ class Transportadora
             'id'     => $this->id,
             'city' => $this->city,
             'name'  => $this->name,
+            'freight_air'  => $this->freight_air,
+            'freight_earthly'  => $this->freight_earthly,
+            'freight_water'  => $this->freight_water,
         ];
     }
 

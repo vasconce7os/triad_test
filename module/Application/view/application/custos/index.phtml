@@ -1,0 +1,38 @@
+<?php
+$title = 'Custos';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title); ?></h1>
+<h2>
+    Selecione uma transportadora
+</h2>
+
+<table class="table">
+    <tr>
+        <th>Nome</th>
+        <th>Cidade</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($this->paginator as $transportadora) : // <-- change here! ?>
+        <tr>
+            <td><?= $this->escapeHtml($transportadora->name) ?></td>
+            <td><?= $this->escapeHtml($transportadora->city) ?></td>
+            <td>
+                <a href="<?= $this->url('custos', ['action' => 'gerenciar_custos', 'id' => $transportadora->id]) ?>">
+                Gerenciar custos
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<?= $this->paginationControl(
+// The paginator object:
+    $this->paginator,
+    // The scrolling style:
+    'sliding',
+    // The partial to use to render the control:
+    'partial/paginator',
+    // The route to link to when a user clicks a control link:
+    ['route' => 'album']
+); ?>

@@ -63,18 +63,19 @@ class TransportadoraTable
                 $id
             ));
         }
-
         return $row;
     }
 
-    public function saveTransportadora(Transportadora $album)
+    public function saveTransportadora(Transportadora $transportadora)
     {
         $data = [
-            'city' => $album->city,
-            'name'  => $album->name,
+            'city' => $transportadora->city,
+            'name'  => $transportadora->name,
+            'freight_air'  => $transportadora->freight_air,
+            'freight_earthly'  => $transportadora->freight_earthly,
+            'freight_water'  => $transportadora->freight_water,
         ];
-
-        $id = (int) $album->id;
+        $id = (int) $transportadora->id;
 
         if ($id === 0) {
             $this->tableGateway->insert($data);
